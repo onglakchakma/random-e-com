@@ -1,0 +1,174 @@
+import React, { useState, useEffect } from 'react'
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import CardMedia from "@mui/material/CardMedia";
+import CardContent from "@mui/material/CardContent";
+import Avatar from "@mui/material/Avatar";
+import { red } from "@mui/material/colors";
+import { Container } from "@mui/material";
+import CardActions from '@mui/material/CardActions';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Skeleton from '@mui/material/Skeleton';
+import { Link } from 'react-router-dom';
+
+const styles = {
+    productHeader: {
+        marginTop: '100px',
+    },
+
+    header: {
+        textAlign: 'center'
+    }
+
+}
+
+const Products = () => {
+
+    let componentMounted = true
+    const [data, setData] = useState([])
+    const [filter, setFilter] = useState(data)
+    const [loading, setLoading] = useState(false)
+    const [categories, setCategories] = useState([])
+
+    const filterProduct = (cat) => {
+        const updatedList = data.filter(x => x.category === cat)
+        setFilter(updatedList)
+    }
+
+    useEffect(() => {
+
+        const getProducts = async () => {
+            setLoading(true)
+            const response = await fetch('https://fakestoreapi.com/products')
+            if (componentMounted) {
+                setData(await response.clone().json())
+                setFilter(await response.json())
+                setLoading(false)
+            }
+            return () => {
+                componentMounted = false;
+            }
+        }
+        const getCategories = async () => {
+            const response = await fetch('https://fakestoreapi.com/products/categories')
+            if (componentMounted) {
+                setCategories(await response.json())
+            }
+            return () => {
+                componentMounted = false;
+            }
+        }
+
+        getCategories()
+        getProducts()
+
+    }, [])
+
+    const Loading = () => {
+        return <>
+
+            <Grid container justifyContent={"center"} spacing={1} >
+                <Grid md={3} item >
+                    <Skeleton variant="rectangular" width={250} height={300} />
+                </Grid>
+                <Grid md={3} item >
+                    <Skeleton variant="rectangular" width={250} height={300} />
+                </Grid>                
+                <Grid md={3} item >
+                    <Skeleton variant="rectangular" width={250} height={300} />
+                </Grid>                
+                <Grid md={3} item>
+                    <Skeleton variant="rectangular" width={250} height={300} />
+                </Grid>
+            </Grid>
+
+
+        </>
+    }
+
+    const ShowProducts = () => {
+        return <>
+            <Container>
+                <Grid container justifyContent={"center"} sx={{ py: 4 }}>
+                    <Grid item>
+                        <Box sx={{ display: { xs: "none", md: "flex" } }} spacing={2}>
+                            <Button onClick={() => setFilter(data)} variant='outlined' sx={{ ml: 4, mr: 1, color: "black", display: "block", border: "2px black solid" }}>
+                                All Products
+                            </Button>
+                            {
+                                categories.map((category, index) => {
+                                    return <Button onClick={() => filterProduct(category)} variant='outlined' sx={{ ml: 4, mr: 1, color: "black", display: "block", border: "2px black solid" }}>
+                                        {category}
+                                    </Button>
+                                })
+                            }
+
+                        </Box>
+                    </Grid>
+                </Grid>
+                <Grid container justifyContent={"center"}  >
+                    <Grid item container md={12} spacing={3}>
+                        {filter.map((product) => {
+                            return (
+                                <Grid md={3} item >
+                                    <Card sx={{ maxWidth: 345 }}>
+                                        <CardHeader
+                                            avatar={
+                                                <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                                                    {product.title[0]}
+                                                </Avatar>
+                                            }
+
+                                            title={`${product.title.slice(0, 15)}.....`}
+                                            subheader={`$${product.price}`}
+                                        />
+                                        <CardMedia
+                                            component="img"
+                                            height="194"
+                                            image={product.image}
+                                            alt="Paella dish"
+                                        />
+                                        <CardContent>
+                                            <Typography variant="body2" color="text.secondary">
+                                                {product.description.substr(0, 50)}.....
+                                            </Typography>
+                                        </CardContent>
+                                        <CardActions >
+                                            <Link to={`/products/${product.id}`} style={{ textDecoration: 'none', margin: 'auto' }}>
+                                                <Button variant='outlined' sx={{ color: "black", display: "block", border: "2px black solid" }}>
+                                                    View Details
+                                                </Button>
+                                            </Link>
+
+                                        </CardActions>
+                                    </Card>
+                                </Grid>
+                            );
+                        })}
+                    </Grid>
+                </Grid>
+            </Container>
+
+        </>
+    }
+
+    return (
+        <div className='product-list' style={styles.productHeader}>
+            <Container>
+                <Typography variant="h2" style={styles.header}>
+                    Latest Products
+                </Typography>
+                <hr />
+                {
+                    loading ? <Loading /> : <ShowProducts />
+                }
+
+            </Container >
+        </div>
+    )
+}
+
+export default Products
