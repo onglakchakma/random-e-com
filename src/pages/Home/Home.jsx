@@ -1,6 +1,5 @@
 import React from 'react'
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import Box from "@mui/material/Box";
@@ -28,7 +27,7 @@ const Home = () => {
                         <Box
                             sx={{
                                 position: 'absolute',
-                                bottom: 0,
+                                top: '50%',
                                 left: 0,
                                 width: '100%',
                                 color: 'white',

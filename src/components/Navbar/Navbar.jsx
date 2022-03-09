@@ -8,7 +8,6 @@ import { grey } from '@mui/material/colors';
 import LoginIcon from '@mui/icons-material/Login';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import { NavLink } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 
 
 const Navbar = () => {
@@ -20,7 +19,7 @@ const Navbar = () => {
                     <Toolbar >
 
                         <Typography variant="h6" component="div" color="black">
-                            Fake Clothing
+                            Fake Commerce
                         </Typography>
                         <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }} spacing={2}>
                             <NavLink to="/" style={{textDecoration: 'none'}}>
@@ -33,9 +32,9 @@ const Navbar = () => {
                                     Products
                                 </Button>
                             </NavLink>
-                            <NavLink to="/about" style={{textDecoration: 'none'}}>  
+                            <NavLink to="/create-product" style={{textDecoration: 'none'}}>  
                                 <Button variant='outlined' sx={{ mx: 1, color: "black", display: "block", border: "2px black solid" }}>
-                                    About
+                                    Create Product
                                 </Button>
                             </NavLink>
                             <NavLink to="/contact" style={{textDecoration: 'none'}}>

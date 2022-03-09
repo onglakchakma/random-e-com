@@ -14,6 +14,11 @@ import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
 import { Link } from 'react-router-dom';
 
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+
 const styles = {
     productHeader: {
         marginTop: '100px',
@@ -27,15 +32,29 @@ const styles = {
 
 const Products = () => {
 
-    let componentMounted = true
     const [data, setData] = useState([])
     const [filter, setFilter] = useState(data)
     const [loading, setLoading] = useState(false)
     const [categories, setCategories] = useState([])
+    const [value, setValue] = useState("");
+
 
     const filterProduct = (cat) => {
         const updatedList = data.filter(x => x.category === cat)
         setFilter(updatedList)
+    }
+
+    const handleSort = async (value) => {
+        const checkValue = (value === "Ascending") ? "asc" : "desc"
+        
+        await fetch(`https://fakestoreapi.com/products?sort=${checkValue}`)
+            .then(res => res.json())
+            .then(json => setFilter(json))
+
+    }
+
+    const handleChange = (e) => {
+        setValue(e.target.value)
     }
 
     useEffect(() => {
@@ -43,23 +62,17 @@ const Products = () => {
         const getProducts = async () => {
             setLoading(true)
             const response = await fetch('https://fakestoreapi.com/products')
-            if (componentMounted) {
-                setData(await response.clone().json())
-                setFilter(await response.json())
-                setLoading(false)
-            }
-            return () => {
-                componentMounted = false;
-            }
+
+            setData(await response.clone().json())
+            setFilter(await response.json())
+            setLoading(false)
+
         }
         const getCategories = async () => {
             const response = await fetch('https://fakestoreapi.com/products/categories')
-            if (componentMounted) {
-                setCategories(await response.json())
-            }
-            return () => {
-                componentMounted = false;
-            }
+            setCategories(await response.json())
+
+
         }
 
         getCategories()
@@ -76,10 +89,10 @@ const Products = () => {
                 </Grid>
                 <Grid md={3} item >
                     <Skeleton variant="rectangular" width={250} height={300} />
-                </Grid>                
+                </Grid>
                 <Grid md={3} item >
                     <Skeleton variant="rectangular" width={250} height={300} />
-                </Grid>                
+                </Grid>
                 <Grid md={3} item>
                     <Skeleton variant="rectangular" width={250} height={300} />
                 </Grid>
@@ -92,8 +105,8 @@ const Products = () => {
     const ShowProducts = () => {
         return <>
             <Container>
-                <Grid container justifyContent={"center"} sx={{ py: 4 }}>
-                    <Grid item>
+                <Grid container justifyContent={"center"} sx={{ py: 4 }} spacing={2}>
+                    <Grid item md={10}>
                         <Box sx={{ display: { xs: "none", md: "flex" } }} spacing={2}>
                             <Button onClick={() => setFilter(data)} variant='outlined' sx={{ ml: 4, mr: 1, color: "black", display: "block", border: "2px black solid" }}>
                                 All Products
@@ -106,6 +119,25 @@ const Products = () => {
                                 })
                             }
 
+                        </Box>
+                    </Grid>
+                    <Grid item md={2}>
+                        <Box sx={{ display: { xs: "none", md: "flex" } }} spacing={2}>
+                            <FormControl fullWidth size="small">
+                                <InputLabel id="demo-simple-select-label">Sort</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={value}
+                                    label="Categories"
+                                    onChange={handleChange}
+                                >
+                                    <MenuItem value={10} onClick={()=>handleSort("Ascending")}>Ascending</MenuItem>
+                                    <MenuItem value={20} onClick={()=>handleSort("Descending")}>Descending</MenuItem>
+
+
+                                </Select>
+                            </FormControl>
                         </Box>
                     </Grid>
                 </Grid>

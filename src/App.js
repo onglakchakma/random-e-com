@@ -4,6 +4,7 @@ import Navbar from './components/Navbar/Navbar'
 import Home from './pages/Home/Home'
 import Products from './components/Products/Products';
 import Product from './components/Product/Product';
+import CreateProduct from './pages/CreateProduct';
 import { Routes, Route } from 'react-router-dom'
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Route exact path="/" element={<Home />} />
         <Route exact path="/products" element={<Products />} />
         <Route exact path="/products/:id" element={<Product />} />
+        <Route exact path="/create-product" element={<CreateProduct />} />
 
       </Routes>
 
