@@ -16,6 +16,7 @@ import Skeleton from '@mui/material/Skeleton';
 import Rating from '@mui/material/Rating';
 import { Link } from 'react-router-dom';
 import Stack from "@mui/material/Stack";
+import {useNavigate} from 'react-router-dom'
 
 const Product = () => {
     const { id } = useParams()
@@ -118,7 +119,7 @@ const Product = () => {
                                             Add to Cart
                                         </Button>
                                     </Link>
-                                    <Link to={`/products/${id}`} style={{ textDecoration: 'none', margin: '4px' }}>
+                                    <Link to={`/update-product/${id}`} style={{ textDecoration: 'none', margin: '4px' }}>
                                         <Button variant='outlined' sx={{ color: "black", display: "block", border: "2px black solid" }}>
                                             Update Product
                                         </Button>
