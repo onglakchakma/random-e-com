@@ -11,6 +11,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 const UpdateProduct = () => {
     const [product, setProduct] = useState([])
     const { id } = useParams()
+    const [loading, setLoading] = useState(false)
 
     const navigate = useNavigate()
     const handleClick = () => {
@@ -35,10 +36,11 @@ const UpdateProduct = () => {
                 .then(res => res.json())
                 .then(json => console.log(json))
         }
-        const getProduct = () => {
-            fetch(`https://fakestoreapi.com/products/${id}`)
-                .then(res => res.json())
-                .then(json => setProduct(json))
+        const getProduct = async () => {
+            setLoading(true)
+            const response = await fetch(`https://fakestoreapi.com/products/${id}`)
+            setProduct(await response.json())
+            setLoading(false)
         }
 
         updateProduct()
@@ -46,34 +48,45 @@ const UpdateProduct = () => {
 
     }, [])
 
-    return (
-        <>
+    const Loading = () => {
+        return <>
+
+            <h1>Loading...</h1>
+        </>
+    }
+
+    const Show = () => {
+        return <>
             <Container sx={{ pt: 3 }}>
                 <Grid container spacing={2}>
-                    <Grid item md={3} >
+                    <Grid item md={8} >
+                        <h1>Update Product</h1>
                         <Box sx={{
                             '& .MuiTextField-root': { m: 1 },
                         }}
                             noValidate>
-                            <TextField
+                            <TextField style ={{width: '100%'}}
                                 id="outlined-error"
-                                label="Product Title"
+                                label="Product Name"
                                 defaultValue={product?.title}
                             />
-                            <TextField
+                            <TextField style ={{width: '100%'}}
                                 id="outlined-error"
                                 label="Product Category"
+                                defaultValue={product?.category}
                             />
-                            <TextField
+                            <TextField style ={{width: '100%'}}
                                 id="outlined-error"
                                 label="Product Price"
+                                defaultValue={product?.price}
                             />
-                            <TextField
+                            <TextField style ={{width: '100%'}}
                                 id="outlined-error"
                                 label="Product Description"
+                                defaultValue={product?.description}
                             />
 
-                            <Button sx={{ mx: 1, color: "black", display: "block", border: "2px black solid" }}
+                            <Button sx={{ mx: 1, color: "black", display: "block", border: "2px black solid", width:300 }}
                                 variant="outlined"
                                 component="label"
                             >
@@ -91,10 +104,18 @@ const UpdateProduct = () => {
                     </Grid>
                 </Grid>
             </Container>
-
         </>
 
+    }
 
+    return (
+        <div>
+
+            {
+                loading ? <Loading /> : <Show />
+            }
+
+        </div>
     )
 }
 

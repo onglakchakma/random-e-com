@@ -37,29 +37,30 @@ const CreateProduct = () => {
         <>
             <Container sx={{ pt: 3 }}>
                 <Grid container spacing={2}>
-                    <Grid item md={3} >
+                    <Grid item md={8} >
+                        <h1>Create Product</h1>
                         <Box sx={{
                             '& .MuiTextField-root': { m: 1 },
                         }}
                             noValidate>
-                            <TextField
+                            <TextField style ={{width: '100%'}}
                                 id="outlined-error"
                                 label="Product Title"
                             />
-                            <TextField
+                            <TextField style ={{width: '100%'}}
                                 id="outlined-error"
                                 label="Product Category"
                             />
-                            <TextField
+                            <TextField style ={{width: '100%'}} 
                                 id="outlined-error"
                                 label="Product Price"
                             />
-                            <TextField
+                            <TextField style ={{width: '100%'}}
                                 id="outlined-error"
                                 label="Product Description"
                             />
 
-                            <Button sx={{ mx: 1, color: "black", display: "block", border: "2px black solid" }}
+                            <Button sx={{ mx: 1, color: "black", display: "block", border: "2px black solid" ,width:300  }}
                                 variant="outlined"
                                 component="label"
                             >
