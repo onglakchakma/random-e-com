@@ -6,7 +6,9 @@ import Products from './components/Products/Products';
 import Product from './components/Product/Product';
 import CreateProduct from './pages/CreateProduct/CreateProduct';
 import UpdateProduct from './pages/UpdateProduct/UpdateProduct';
-import { Routes, Route } from 'react-router-dom'
+import PageNotFound from './pages/PageNotFound/PageNotFound';
+import { Routes, Route, Navigate } from 'react-router-dom'
+
 
 function App() {
   return (
@@ -17,7 +19,10 @@ function App() {
         <Route exact path="/products" element={<Products />} />
         <Route exact path="/products/:id" element={<Product />} />
         <Route exact path="/create-product" element={<CreateProduct />} />
-        <Route path="/update-product/:id" element={<UpdateProduct />} />
+        <Route exact path="/update-product/:id" element={<UpdateProduct />} />
+        <Route path="/404" element={<PageNotFound />}/>
+        <Route exact path="*" element={<Navigate to="/404"></Navigate>} />
+
       </Routes>
 
     </>
